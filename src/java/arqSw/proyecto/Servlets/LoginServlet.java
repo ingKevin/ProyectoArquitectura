@@ -1,6 +1,5 @@
 package arqSw.proyecto.Servlets;
 
-
 import arqSw.proyecto.DAO.AdministradorDAO;
 import arqSw.proyecto.DAO.ArtistaDAO;
 import arqSw.proyecto.DAO.ClienteDAO;
@@ -35,6 +34,7 @@ public class LoginServlet extends HttpServlet {
                 if (name.equals(a.getUsuario()) && password.equals(a.getPassword())) {
                     out.print("Bienvenido, " + name);
                     HttpSession session = request.getSession();
+                    session.setAttribute("id", a.getIdAdministrador());
                     session.setAttribute("name", name);
                     session.setAttribute("type", "Administrador");
                     request.getRequestDispatcher("indexAdm.html").include(request, response);
@@ -44,35 +44,36 @@ public class LoginServlet extends HttpServlet {
                 }
                 out.close();
             }
-        }else if (P.equals("cliente")) {
+        } else if (P.equals("cliente")) {
             ClienteDAO cliDao = new ClienteDAO();
             List<Cliente> cliP = cliDao.getCliente();
             for (Cliente a : cliP) {
-                if (name.equals(a.getUsuario()) && password.equals(a.getPassword())) {   
+                if (name.equals(a.getUsuario()) && password.equals(a.getPassword())) {
                     out.print("Bienvenido, " + name);
                     HttpSession session = request.getSession();
+                    session.setAttribute("id", a.getIdCliente());
                     session.setAttribute("name", name);
                     session.setAttribute("type", "Cliente");
                     request.getRequestDispatcher("indexCliente.html").include(request, response);
-                    
+
                 } else {
                     out.print("Usuario o contraseña incorrecta!");
                     request.getRequestDispatcher("index.html").include(request, response);
                 }
                 out.close();
             }
-//        }else if (P.equals("artista")) {
-        }else {
+        } else if (P.equals("artista")) {
             ArtistaDAO artDao = new ArtistaDAO();
             List<Artista> admP = artDao.getArtista();
             for (Artista a : admP) {
                 if (name.equals(a.getUsuario()) && password.equals(a.getPassword())) {
-                    out.print("Bienvenido, " + name);
+                    out.print("Bienvenido, " + name + a.getIdArtista());
                     HttpSession session = request.getSession();
+                    session.setAttribute("id", a.getIdArtista());
                     session.setAttribute("name", name);
                     session.setAttribute("type", "Artista");
                     request.getRequestDispatcher("indexArtista.html").include(request, response);
-                    
+
                 } else {
                     out.print("Usuario o contraseña incorrecta!");
                     request.getRequestDispatcher("index.html").include(request, response);
@@ -80,6 +81,5 @@ public class LoginServlet extends HttpServlet {
                 out.close();
             }
         }
-
     }
 }

@@ -5,11 +5,13 @@ import arqSw.proyecto.Hibernate.Cliente;
 import arqSw.proyecto.Hibernate.HibernateUtil;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+
 public class ArtistaDAO {
-    
+
     Session session = null;
 
     public ArtistaDAO() {
@@ -21,30 +23,49 @@ public class ArtistaDAO {
         try {
             Transaction tx = session.beginTransaction();
             Query q = session.createQuery("from Artista");
-            artistas = (List<Artista>) q.list();            
+            artistas = (List<Artista>) q.list();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return artistas;
     }
-    public boolean insertCliente(int id ,String user, String pass) {
+
+    public boolean insertCliente(int id, String user, String pass) {
         boolean b = false;
-        try {            
-            Transaction tx = session.beginTransaction();           
-            
+        try {
+            Transaction tx = session.beginTransaction();
+
             Artista cli = new Artista();
-            
+
             cli.setIdArtista(id);
             cli.setUsuario(user);
-            cli.setPassword(pass);            
+            cli.setPassword(pass);
             session.save(cli);
-            session.flush();            
+            session.flush();
             tx.commit();
             b = true;
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         return b;
+    }
+
+    public void updatePass(int ArtistaID, String pass) {
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Artista art = (Artista) session.get(Artista.class, ArtistaID);
+            art.setPassword(pass);
+            session.update(art);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
     }
 }

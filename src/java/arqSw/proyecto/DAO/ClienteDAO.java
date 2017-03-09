@@ -61,24 +61,21 @@ public class ClienteDAO {
         return b;
     }
 
-    public boolean updatePassword(String pass1) {
-        boolean b = false;
-        //recibir ID
+    public void updatePass(int ClienteID, String pass) {
+        Transaction tx = null;
         try {
-            Transaction tx = session.beginTransaction();
-
-            Cliente cliente = (Cliente) session.get(Cliente.class, "usuario");
-            cliente.setPassword(pass1);
-            session.save(cliente);
-            session.update(cliente);
+            tx = session.beginTransaction();
+            Cliente cli = (Cliente) session.get(Cliente.class, ClienteID);
+            cli.setPassword(pass);
+            session.update(cli);
             tx.commit();
-            b = true;
-
-        } catch (Exception e) {
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
             e.printStackTrace();
         } finally {
             session.close();
         }
-        return b;
     }
 }
