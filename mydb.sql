@@ -48,7 +48,7 @@ INSERT INTO `administrador` (`idAdministrador`, `usuario`, `password`) VALUES
 CREATE TABLE IF NOT EXISTS `artista` (
   `idArtista` int(11) NOT NULL,
   `usuario` varchar(45) DEFAULT NULL,
-  `password` varchar(45) DEFAULT NULL
+  `clave` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 --
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `camiseta` (
 CREATE TABLE IF NOT EXISTS `cliente` (
   `idCliente` int(11) NOT NULL,
   `usuario` varchar(45) DEFAULT NULL,
-  `password` varchar(45) DEFAULT NULL,
+  `clave` varchar(45) DEFAULT NULL,
   `ubicacion` varchar(45) DEFAULT NULL,
   `formaPago` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
@@ -103,7 +103,7 @@ INSERT INTO `cliente` (`idCliente`, `usuario`, `password`, `ubicacion`, `formaPa
 --
 
 CREATE TABLE IF NOT EXISTS `estampa` (
-  `idEstampa` int(11) NOT NULL,
+  `idCamiseta` int(11) NOT NULL,
   `nombre` varchar(45) DEFAULT NULL,
   `descripcion` varchar(45) DEFAULT NULL,
   `imagenes` varchar(45) DEFAULT NULL,
